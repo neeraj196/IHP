@@ -87,7 +87,7 @@ class TempEvalCorpus(Corpus):
             elif os.path.isfile(fname2):
                     trainfiles.append(fname2)
             else:
-                print "no annotations for this doc: {}".format(d)
+                print ("no annotations for this doc: {}".format(d))
 
         total = len(trainfiles)
         logging.info("loading annotations...")
@@ -101,7 +101,7 @@ class TempEvalCorpus(Corpus):
                 root = ET.fromstring(xml.read())
                 did = traindirs[current]
                 if did not in self.documents:
-                    print "no text for this document: {}".format(did)
+                    print ("no text for this document: {}".format(did))
                     # sys.exit()
                     continue
                 annotations = root.find("annotations")
@@ -154,7 +154,7 @@ class TempEvalCorpus(Corpus):
                     end = e[1] - sentence.offset
                     sentence.tag_entity(start, end, e[2].lower(), text=entity_text, original_id=e[3])
                 else:
-                    print "could not find sentence for this span: {}-{}".format(e[0], e[1])
+                    print ("could not find sentence for this span: {}-{}".format(e[0], e[1]))
 
 
     def load_relations(self, annotations_tag, did, allwords):
@@ -204,7 +204,7 @@ class TempEvalCorpus(Corpus):
             if entity.original_id in source_relation:
                 for target in source_relation[entity.original_id]:
                     if target not in entity_list:
-                        print "target not in entity list:", target
+                        print ("target not in entity list:", target)
                     else:
                         pairwordsdic = {}
                         entity.targets.append(entity_list[target].eid)
@@ -279,7 +279,7 @@ def get_entity(document, eid, source="goldstandard"):
             for e in sentence.entities.elist[source]:
                 if e.eid == eid:
                     return e
-    print "no entity found for eid {}".format(eid)
+    print ("no entity found for eid {}".format(eid))
     return None
 
 def run_anafora_evaluation(annotations_path, results, doctype="all"):
@@ -290,7 +290,7 @@ def run_anafora_evaluation(annotations_path, results, doctype="all"):
     return r
 
 def write_tempeval_results(results, models, ths, rules):
-    print "saving results to {}".format(results.path + ".tsv")
+    print ("saving results to {}".format(results.path + ".tsv"))
     n = 0
     for did in results.corpus.documents:
         root = ET.Element("data") # XML data
@@ -405,7 +405,7 @@ def get_thymedata_gold_ann_set(gold_path, etype, text_path, doctype):
         elif os.path.isfile(fname2):
                 trainfiles.append(fname2)
         else:
-            print "no annotations for this doc: {}".format(d)
+            print ("no annotations for this doc: {}".format(d))
 
     total = len(trainfiles)
     # logging.info("loading annotations...")

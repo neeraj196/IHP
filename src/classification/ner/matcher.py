@@ -20,8 +20,7 @@ class MatcherModel(object):
                 if "goldstandard" in sentence.entities.elist:
                     for entity in sentence.entities.elist["goldstandard"]:
                         if entity.text == "a" or entity.text == "as":
-                            print sentence.sid, sentence.text, entity.dstart, entity.dend, entity.text
-                            print
+                            print (sentence.sid, sentence.text, entity.dstart, entity.dend, entity.text)
                             continue
                         self.names.add(entity.text)
         logging.info("Created set of {} entity names".format(len(self.names)))

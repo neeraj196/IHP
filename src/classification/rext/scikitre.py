@@ -2,12 +2,12 @@ import os
 import logging
 
 import itertools
-import word2vec
+from gensim.models import word2vec
 import numpy as np
 import sys
 from sklearn import svm
 from sklearn.dummy import DummyClassifier
-from sklearn.externals import joblib
+import joblib
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.feature_selection import SelectKBest, chi2
 from sklearn.linear_model import SGDClassifier
@@ -15,7 +15,7 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.pipeline import Pipeline
 from sklearn import metrics
-from sklearn.grid_search import GridSearchCV
+from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import f1_score, make_scorer
 
 from classification.results import ResultsRE
@@ -178,7 +178,7 @@ class ScikitRE(ReModel):
         try:
             self.text_clf = self.text_clf.fit(self.features, self.labels)
         except ValueError:
-            print "error training {}".format(self.modelname)
+            print ("error training {}".format(self.modelname))
             return
         if not os.path.exists(self.basedir + self.modelname):
             os.makedirs(self.basedir + self.modelname)
@@ -193,7 +193,7 @@ class ScikitRE(ReModel):
         feature_names = self.text_clf.named_steps["vect"].get_feature_names()
         feature_names = [feature_names[i] for i
                          in ch2.get_support(indices=True)]
-        print feature_names
+        print (feature_names)
         # joblib.dump(gs_clf.best_estimator_, "{}/{}/{}.pkl".format(self.basedir, self.modelname, self.modelname))
         # self.test()
 
@@ -205,7 +205,7 @@ class ScikitRE(ReModel):
 
         # for doc, category in zip(self.features, self.pred):
         #     print '%r => %s' % (doc, category)
-        print np.mean(self.pred == self.labels)
+        print (np.mean(self.pred == self.labels))
         print(metrics.classification_report(self.labels, self.pred))
 
     def get_predictions(self, corpus):

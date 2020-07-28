@@ -18,7 +18,7 @@ from config import config
 stanford_coding = {"-LRB-": "<", "\/": "/", "&apos;": "'", "analogs": "analogues", "analog": "analogue",
                    "-RRB-": ">", ":&apos;s": "'s"}
 # convert < to -LRB, etc
-rep = dict((re.escape(v), k) for k, v in stanford_coding.iteritems())
+rep = dict((re.escape(v), k) for k, v in stanford_coding.items())
 pattern = re.compile("|".join(rep.keys()))
 
 
@@ -72,6 +72,7 @@ class StanfordNERModel(SimpleTaggerModel):
         #     self.save_corpus_to_sbilou()
         self.save_corpus_to_sbilou()
         logging.info("Training model with StanfordNER")
+        print (self.PARAMS)
         process = Popen(self.PARAMS, stdout=PIPE, stderr=PIPE)
         # process.communicate()
         while True:
@@ -100,9 +101,9 @@ class StanfordNERModel(SimpleTaggerModel):
             except SocketError as e:
                 if e.errno != errno.ECONNRESET:
                     raise # Not error we are looking for
-                print "socket error with sentence {}".format(text)
+                print ("socket error with sentence {}".format(text))
             except:
-                print "other socket error!"
+                print ("other socket error!")
                 out = self.tagger.tag_text(text)
                 #print text, out
                 #out = text
@@ -125,10 +126,10 @@ class StanfordNERModel(SimpleTaggerModel):
     def process_sentence(self, out, sid, results):
         sentence = results.corpus.documents['.'.join(sid.split('.')[:-1])].get_sentence(sid)
         if sentence is None:
-            print sid
-            print "not found!"
-            print results.corpus.documents['.'.join(sid.split('.')[:-1])]
-            print [s.sid for s in results.corpus.documents['.'.join(sid.split('.')[:-1])].sentences]
+            print (sid)
+            print ("not found!")
+            print (results.corpus.documents['.'.join(sid.split('.')[:-1])])
+            print ([s.sid for s in results.corpus.documents['.'.join(sid.split('.')[:-1])].sentences])
             sys.exit()
         tagged_tokens = self.tag_tokens(out, sentence)
         #print tagged_tokens[0][2].text, "**************************************************************************************************************"
@@ -212,11 +213,11 @@ class StanfordNERModel(SimpleTaggerModel):
                     "-tokenizerFactory", "edu.stanford.nlp.process.WhitespaceTokenizer", "-tokenizerOptions",
                     "tokenizeNLs=true"]
         logging.info(' '.join(ner_args))
-        print ' '.join(ner_args)
+        print (' '.join(ner_args))
         logging.info("Starting the server for {}...".format(self.path))
         self.process = Popen(ner_args, stdin = PIPE, stdout = PIPE, stderr = PIPE, shell=False)
         while True:
-            out = self.process.stderr.readline()
+            out = str(self.process.stderr.readline())
             if out and out != "":
                 logging.info(out)
             if "done" in out:

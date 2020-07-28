@@ -1,5 +1,5 @@
 FROM ubuntu:latest
-MAINTAINER Andre Lamurias <alamurias@lasige.di.fc.ul.pt>
+MAINTAINER Neeraj Kulkarni <nekulk@microsoft.com>
 WORKDIR /
 COPY bin/ bin/
 

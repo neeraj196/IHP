@@ -99,7 +99,7 @@ class Document(object):
                 'outputFormat': 'json',
             })
             if isinstance(corenlpres, basestring):
-                print corenlpres
+                print (corenlpres)
                 corenlpres = corenlpserver.annotate(s.text.encode("utf8"), properties={
                 'ssplit.eolonly': True,
                 # 'annotators': 'tokenize,ssplit,pos,depparse,parse',
@@ -136,8 +136,8 @@ class Document(object):
                 totalchars += len(s.text)
                 totalchars = self.get_space_between_sentences(totalchars)
             if not found:
-                print "could not find sentence for %s:%s on %s!" % (start,
-                                                                       end, self.did)
+                print ("could not find sentence for %s:%s on %s!" % (start,
+                                                                       end, self.did))
                 # sys.exit()
 
     def add_relation(self, entity1, entity2, subtype, relation, source="goldstandard", **kwargs):
@@ -251,7 +251,7 @@ class Document(object):
                 # print "found it!"
                 return s
         for s in self.sentences:
-            print s.tokens[0].dstart <= start, s.tokens[-1].dend >= end, s.tokens[0].dstart, s.tokens[-1].dend, s.text
+            print (s.tokens[0].dstart <= start, s.tokens[-1].dend >= end, s.tokens[0].dstart, s.tokens[-1].dend, s.text)
         return None
 
     def get_offsets(self, esource, ths, rules, off_list=None):
@@ -277,7 +277,7 @@ class Document(object):
             for e in sentence.entities.elist[source]:
                 if e.eid == eid:
                    return e
-        print "no entity found for eid {}".format(eid)
+        print ("no entity found for eid {}".format(eid))
         return None
 
     def get_entities(self, source):

@@ -164,10 +164,10 @@ class SuiteCorpus(HPOCorpus):
 		else:
 			sentence = self.documents[did].find_sentence_containing(start, end)
 			if not sentence:
-				print "could not find this sentence!", start, end
+				print ("could not find this sentence!", start, end)
 		tokens = sentence.find_tokens_between(start, end)
 		if not tokens:
-			print "could not find tokens!", start, end, sentence.sid, ':'.join(res)
+			print ("could not find tokens!", start, end, sentence.sid, ':'.join(res))
 			sys.exit()
 		entity = sentence.entities.find_entity(start - sentence.offset, end - sentence.offset)
 		return tokens, sentence, entity

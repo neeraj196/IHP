@@ -2,7 +2,7 @@
 from __future__ import division, unicode_literals
 
 import argparse
-import cPickle as pickle
+import _pickle as pickle
 import codecs
 import logging
 import sys
@@ -134,7 +134,7 @@ considered when coadministering with megestrol acetate.''',
     while len(logging.root.handlers) > 0:
         logging.root.removeHandler(logging.root.handlers[-1])
     logging_format = '%(asctime)s %(levelname)s %(filename)s:%(lineno)s:%(funcName)s %(message)s'
-    logging.basicConfig(level=numeric_level, format=logging_format)
+    logging.basicConfig(level=numeric_level, format=logging_format, filename="debug.log")
     logging.getLogger().setLevel(numeric_level)
     logging.getLogger("requests.packages").setLevel(30)
     logging.info("Processing action {0} on {1}".format(options.actions, options.goldstd))
@@ -144,7 +144,7 @@ considered when coadministering with megestrol acetate.''',
     # pre-processing options
     if options.actions == "load_corpus":
         if len(options.goldstd) > 1:
-            print "load only one corpus each time"
+            print ("load only one corpus each time")
             sys.exit()
         options.goldstd = options.goldstd[0]
         corpus_format = config.paths[options.goldstd]["format"]
@@ -160,7 +160,7 @@ considered when coadministering with megestrol acetate.''',
 
     elif options.actions == "annotate": # rext-add annotation to corpus
         if len(options.goldstd) > 1:
-            print "load only one corpus each time"
+            print ("load only one corpus each time")
             sys.exit()
         options.goldstd = options.goldstd[0]
         corpus_path = config.paths[options.goldstd]["corpus"]

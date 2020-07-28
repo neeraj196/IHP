@@ -2,9 +2,9 @@ import logging
 
 __author__ = 'Andre'
 import re
-from matcher import MatcherModel
+from matcher import Matcher
 
-class MirnaMatcher(MatcherModel):
+class MirnaMatcher(Matcher):
     """
        Find miRNAs based on a fixed set of expressions.
        Does not need training, since it is based on the fixed nomenclature of miRNAs.

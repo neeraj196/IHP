@@ -261,7 +261,7 @@ class Entities(object):
         for e in self.elist[source]:
             if e.eid == eid:
                 return e
-        print "entity not found:", eid, source
+        print ("entity not found:", eid, source)
 
 
     def get_offsets2(self, esource, ths, rules):

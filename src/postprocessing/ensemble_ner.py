@@ -4,9 +4,9 @@ __author__ = 'Andre'
 from sklearn import ensemble
 from sklearn.pipeline import Pipeline
 import logging
-from sklearn.externals import joblib
+import joblib
 import os
-import cPickle as pickle
+import _pickle as pickle
 import atexit
 
 from text.chemical_entity import chem_words
