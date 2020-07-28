@@ -4,7 +4,7 @@ from __future__ import division, absolute_import
 #from simplejson import loads
 import logging
 import os
-from subprocess import Popen, PIPE
+from subprocess import Popen, PIPE, call
 import codecs
 import xml.etree.ElementTree as ET
 import sys
@@ -60,15 +60,17 @@ class Document(object):
             self.sentences.append(Sentence(self.title, sid=sid, did=self.did))
         # inputtext = clean_whitespace(self.text)
         inputtext = self.text
-        with codecs.open("/tmp/geniainput.txt", 'w', 'utf-8') as geniainput:
+        if not os.path.exists(geniass_path + '/tmp/'):
+            os.mkdir(geniass_path +  '/tmp/')
+        with codecs.open(geniass_path + "/tmp/geniainput.txt", 'w', 'utf-8') as geniainput:
             geniainput.write(inputtext)
         current_dir = os.getcwd()
         os.chdir(geniass_path)
-        geniaargs = ["./geniass", "/tmp/geniainput.txt", "/tmp/geniaoutput.txt"]
-        Popen(geniaargs, stdout=PIPE, stderr=PIPE).communicate()
+        geniacmd = "geniass.exe tmp/geniainput.txt tmp/geniaoutput.txt"
+        call(geniacmd, shell=True)
         os.chdir(current_dir)
         offset = 0
-        with codecs.open("/tmp/geniaoutput.txt", 'r', "utf-8") as geniaoutput:
+        with codecs.open(geniass_path + "/tmp/geniaoutput.txt", 'r', "utf-8") as geniaoutput:
             for l in geniaoutput:
                 stext = l.strip()
                 if stext == "":
@@ -91,16 +93,16 @@ class Document(object):
             self.sentence_tokenize(doctype)
         for s in self.sentences:
             #corenlpres = corenlpserver.raw_parse(s.text)
-            corenlpres = corenlpserver.annotate(s.text.encode("utf8"), properties={
+            corenlpres = corenlpserver.annotate(str(s.text.encode("utf8")), properties={
                 'ssplit.eolonly': True,
                 # 'annotators': 'tokenize,ssplit,pos,depparse,parse',
                 'annotators': 'tokenize,ssplit,pos,parse,ner,lemma,depparse',
                 'gazetteer': '/scr/nlp/data/machine-reading/Machine_Reading_P1_Reading_Task_V2.0/data/SportsDomain/NFLScoring_UseCase/NFLgazetteer.txt',
                 'outputFormat': 'json',
             })
-            if isinstance(corenlpres, basestring):
+            if isinstance(corenlpres, str):
                 print (corenlpres)
-                corenlpres = corenlpserver.annotate(s.text.encode("utf8"), properties={
+                corenlpres = corenlpserver.annotate(str(s.text.encode("utf8")), properties={
                 'ssplit.eolonly': True,
                 # 'annotators': 'tokenize,ssplit,pos,depparse,parse',
                 'nfl.gazetteer': '/scr/nlp/data/machine-reading/Machine_Reading_P1_Reading_Task_V2.0/data/SportsDomain/NFLScoring_UseCase/NFLgazetteer.txt',
